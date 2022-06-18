@@ -4,8 +4,9 @@
 //!
 //! Blocking client can be used also by enabling the **blocking** optional feature.
 
-use reqwest::{Client, Error, Method};
+use reqwest::{Client, Error};
 use serde::Deserialize;
+use crate::HttpResource;
 
 #[cfg(feature = "blocking")]
 pub mod blocking;
@@ -39,29 +40,21 @@ impl<'a> Scryfall<'a> {
     }
 
     /// Makes an HTTP request to an endpoint
-    pub async fn request<E, R>(&self, endpoint: &E) -> Result<R, Error>
-        where E: Endpoint<R>,
-              R: for<'de> Deserialize<'de>
+    pub async fn request<R, O>(&self, resource: &R) -> Result<O, Error>
+        where R: HttpResource<O>,
+              O: for<'de> Deserialize<'de>
     {
-        let url = format!("{}/{}", self.base_url, endpoint.path());
+        let url = format!("{}/{}", self.base_url, resource.path());
 
         self.http_client()
-            .request(endpoint.method(), url)
+            .request(resource.method(), url)
             .send().await?
             .json().await
     }
 }
 
-/// Represents an HTTP endpoint
-///
-/// This is used as a parameter to [Scryfall](Scryfall)
-/// in order to make a request to the api.
-pub trait Endpoint<R: for<'de> Deserialize<'de>> {
-    /// Defines the HTTP method for the endpoint
-    fn method(&self) -> Method;
-
-    /// Defines the path for the endpoint
-    ///
-    /// The path should be relative to the `base_url` of [Scryfall](Scryfall)
-    fn path(&self) -> String;
+impl<'a> Default for Scryfall<'a> {
+    fn default() -> Self {
+        Scryfall::from_url("https://api.scryfall.com")
+    }
 }

@@ -5,7 +5,8 @@
 use reqwest::blocking::Client;
 use reqwest::Error;
 use serde::Deserialize;
-use crate::Endpoint;
+
+use crate::HttpResource;
 
 /// Scryfall blocking client
 #[derive(Clone)]
@@ -37,7 +38,7 @@ impl<'a> Scryfall<'a> {
 
     /// Makes an HTTP request to an endpoint
     pub fn request<E, R>(&self, endpoint: &E) -> Result<R, Error>
-        where E: Endpoint<R>,
+        where E: HttpResource<R>,
               R: for<'de> Deserialize<'de>
     {
         let url = format!("{}/{}", self.base_url, endpoint.path());

@@ -6,15 +6,21 @@
 //! - [Scryfall](Scryfall)
 //! - [ScryfallBlocking](ScryfallBlocking)
 //!
-//! The following endpoints are implemented:
+//! Bindings for the following resources are implemented:
 //!
-//! *WIP*
+//! - <https://api.scryfall.com/bulk-data>
 
 pub mod client;
+pub mod resources;
 
+#[doc(inline)]
+pub use resources::bulk_data;
 #[doc(inline)]
 pub use client::Scryfall;
 #[doc(inline)]
-pub use client::Endpoint;
-#[doc(inline)]
+#[cfg(feature = "blocking")]
 pub use client::blocking::Scryfall as ScryfallBlocking;
+#[doc(inline)]
+pub use resources::HttpResource;
+#[doc(inline)]
+pub use resources::bulk_data::BulkDataResource;

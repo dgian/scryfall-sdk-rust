@@ -3,11 +3,12 @@ use reqwest::Method;
 use serde_json::Value;
 use httpmock::MockServer;
 
-use scryfall_sdk_rust::{Endpoint, Scryfall, ScryfallBlocking};
+use scryfall_sdk_rust::{Scryfall, ScryfallBlocking};
+use scryfall_sdk_rust::resources::HttpResource;
 
 struct TestEndpoint;
 
-impl Endpoint<Value> for TestEndpoint {
+impl HttpResource<Value> for TestEndpoint {
     fn method(&self) -> Method {
         Method::GET
     }
