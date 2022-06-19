@@ -6,6 +6,8 @@
 :source-highlighter: highlight.js
 :highlightjs-theme: monokai-sublime
 
+image:https://github.com/dgian/scryfall-sdk-rust/actions/workflows/rust.yml/badge.svg[Build Status (GitHub Actions),link=https://github.com/dgian/scryfall-sdk-rust/actions]
+
 This is a basic SDK for the amazing https://scryfall.com[Scryfall search-engine] written in https://www.rust-lang.org[Rust].Scryfall is a powerful search tool for Magic: The Gathering cards, sets etc.
 
 This SDK is implemented mainly for learning and practicing Rust skills.
