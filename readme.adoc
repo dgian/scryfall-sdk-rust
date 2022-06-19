@@ -1,0 +1,64 @@
+= Scryfall SDK for Rust
+:icons: font
+:toc:
+:sectanchors:
+:sectnums:
+:source-highlighter: highlight.js
+:highlightjs-theme: monokai-sublime
+
+This is a basic SDK for the amazing https://scryfall.com[Scryfall search-engine] written in https://www.rust-lang.org[Rust].Scryfall is a powerful search tool for Magic: The Gathering cards, sets etc.
+
+This SDK is implemented mainly for learning and practicing Rust skills.
+
+IMPORTANT: This is currently a WIP.
+
+== Usage
+
+First add the dependency to `Cargo.toml`. Currently this crate is not published on https://crates.io[crates.io], so use this git repository instead.
+
+[source, toml]
+----
+[dependencies]
+scryfall_sdk_rust = {git = "https://github.com/dgian/scryfall-sdk-rust.git"}
+----
+
+The SDK exposes two HTTP clients using https://crates.io/crates/reqwest[reqwest crate]:
+
+[loweralpha]
+. async client (default) via `Scryfall` struct
+. blocking client via `ScryfallBlocking` struct
+
+NOTE: In order to use the blocking client you have to enable the `blocking` optional feature in Cargo.toml.
+
+=== Examples
+
+In order to use the SDK, you have to take an instance of either client
+and make a request with it using one of the <<_resources, provided resources>>.
+
+For example:
+
+.Get all bulk data (async)
+[source, rust]
+----
+// uses...
+
+#[tokio::main] // <1>
+async fn main() -> Result<(), Error> {
+    let scryfall = Scryfall::default(); // <2>
+
+    let bulk_data = scryfall
+        .request(&BulkDataResource::All).await?; // <3>
+
+    Ok(println!("{:?}", bulk_data))
+}
+----
+<1> Using https://crates.io/crates/tokio[tokio runtime] for the examples, but you can use anyone you like
+<2> https://api.scryfall.com[Default scryfall api].You can also instantiate the client using `::from_url(&str)` to pass a custom url.
+<3> Make an async request for getting all bulk data
+
+[#_resources]
+== List of implemented resources
+
+The following are currently implemented:
+
+- `BulkDataResource` -> https://scryfall.com/docs/api/bulk-data
