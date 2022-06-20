@@ -64,3 +64,4 @@ async fn main() -> Result<(), Error> {
 The following are currently implemented:
 
 - `BulkDataResource` -> https://scryfall.com/docs/api/bulk-data
+- `CatalogResource` -> https://scryfall.com/docs/api/catalogs

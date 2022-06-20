@@ -1,4 +1,6 @@
 //! Bulk Data resource definitions
+//!
+//! See [Scryfall api documentation](https://scryfall.com/docs/api/bulk-data)
 
 use chrono::{DateTime, Utc};
 use reqwest::Method;
@@ -9,18 +11,18 @@ use BulkDataResource::*;
 
 use crate::resources::{HttpResource, ResourceKind};
 
-/// Endpoints for [Bulk Data resource](https://scryfall.com/docs/api/bulk-data)
+/// Endpoints for `/bulk-data` resource
 pub enum BulkDataResource<'a> {
-    /// Get all bulk data. [API reference](https://scryfall.com/docs/api/bulk-data/all)
+    /// Binding for endpoint `GET /bulk-data`
     All,
 
-    /// Get bulk data filtered by.
+    /// Binding for endpoints:
+    /// - `GET /bulk-data/:id`
+    /// - `GET /bulk-data/:type`
     ///
-    /// Original Scryfall API exposes two endpoints:
-    /// - filter-by-id ([API reference](https://scryfall.com/docs/api/bulk-data/id))
-    /// - filter-by-type ([API reference](https://scryfall.com/docs/api/bulk-data/type))
-    ///
-    /// Here, there is no distinction between them and they both are covered by this resource.
+    /// The Scryfall api exposes two different endpoints,
+    /// but since they provide the same functionality (filter-by-value),
+    /// they both are covered by this binding.
     Filter(&'a str),
 }
 

@@ -4,6 +4,7 @@ use reqwest::Method;
 use serde::{Deserialize, Serialize};
 
 pub mod bulk_data;
+pub mod catalog;
 
 /// Represents an HTTP resource (endpoint)
 ///
