@@ -10,6 +10,7 @@
 //!
 //! - <https://api.scryfall.com/bulk-data>
 //! - <https://api.scryfall.com/catalog>
+//! - <https://api.scryfall.com/symbology>
 
 pub mod client;
 pub mod resources;
@@ -28,3 +29,7 @@ pub use resources::HttpResource;
 pub use resources::bulk_data::BulkDataResource;
 #[doc(inline)]
 pub use resources::catalog::CatalogResource;
+#[doc(inline)]
+pub use resources::card_symbols::CardSymbolsResource;
+#[doc(inline)]
+pub use resources::card_symbols::ManaCostResource;

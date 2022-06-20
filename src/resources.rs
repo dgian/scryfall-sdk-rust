@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 
 pub mod bulk_data;
 pub mod catalog;
+pub mod card_symbols;
 
 /// Represents an HTTP resource (endpoint)
 ///
@@ -47,6 +48,10 @@ pub enum ResourceKind {
     /// `object` -> `list`
     #[serde(rename = "list")]
     List,
+
+    /// `object` -> `mana_cost`
+    #[serde(rename = "mana_cost")]
+    ManaCost,
 
     /// `object` -> `ruling`
     #[serde(rename = "ruling")]
