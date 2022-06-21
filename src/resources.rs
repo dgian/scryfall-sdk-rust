@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 pub mod bulk_data;
 pub mod catalog;
 pub mod card_symbols;
+pub mod card_sets;
 
 /// Represents an HTTP resource (endpoint)
 ///

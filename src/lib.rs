@@ -11,6 +11,7 @@
 //! - <https://api.scryfall.com/bulk-data>
 //! - <https://api.scryfall.com/catalog>
 //! - <https://api.scryfall.com/symbology>
+//! - <https://api.scryfall.com/sets>
 
 pub mod client;
 pub mod resources;
@@ -33,3 +34,8 @@ pub use resources::catalog::CatalogResource;
 pub use resources::card_symbols::CardSymbolsResource;
 #[doc(inline)]
 pub use resources::card_symbols::ManaCostResource;
+#[doc(inline)]
+pub use resources::card_sets::CardSetResource;
+#[doc(inline)]
+pub use resources::card_sets::CardSetListResource;
+
