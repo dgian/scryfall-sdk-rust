@@ -1,8 +1,9 @@
-use chrono::{DateTime, Utc};
-use httpmock::MockServer;
 use httpmock::Method::GET;
+use httpmock::MockServer;
 use indoc::indoc;
 use rstest::{fixture, rstest};
+use time::format_description::well_known::Iso8601;
+use time::OffsetDateTime;
 use url::Url;
 
 use scryfall_sdk_rust::{Scryfall, ScryfallBlocking};
@@ -45,7 +46,7 @@ fn bulk_data() -> BulkData {
             item_kind: ResourceKind::BulkData,
             id: "27bf3214-1271-490b-bdfe-c0be6c23d02e".into(),
             kind: EntryKind::OracleCards,
-            updated_at: "2022-06-18T09:02:10.928+00:00".parse::<DateTime<Utc>>().unwrap(),
+            updated_at: OffsetDateTime::parse("2022-06-18T09:02:10.928+00:00", &Iso8601::PARSING).unwrap(),
             uri: "https://some-url.com".parse::<Url>().unwrap(),
             name: "Oracle Cards".into(),
             description: "A description".into(),

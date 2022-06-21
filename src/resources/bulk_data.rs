@@ -2,9 +2,10 @@
 //!
 //! See [Scryfall api documentation](https://scryfall.com/docs/api/bulk-data)
 
-use chrono::{DateTime, Utc};
 use reqwest::Method;
 use serde::{Deserialize, Serialize};
+use time::OffsetDateTime;
+use time::serde::iso8601;
 use url::Url;
 
 use BulkDataResource::*;
@@ -58,7 +59,8 @@ pub struct BulkDataEntry {
     pub id: String,
     #[serde(rename = "type")]
     pub kind: EntryKind,
-    pub updated_at: DateTime<Utc>,
+    #[serde(with = "iso8601")]
+    pub updated_at: OffsetDateTime,
     pub uri: Url,
     pub name: String,
     pub description: String,
