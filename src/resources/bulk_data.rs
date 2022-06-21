@@ -12,11 +12,14 @@ use BulkDataResource::*;
 
 use crate::resources::{HttpResource, ResourceKind};
 
-/// Endpoints for `/bulk-data` resource
-pub enum BulkDataResource<'a> {
+/// Endpoints for `/bulk-data` resource (list)
+pub enum BulkDataListResource {
     /// Binding for endpoint `GET /bulk-data`
     All,
+}
 
+/// Endpoints for `/bulk-data/*` resource (single)
+pub enum BulkDataResource<'a> {
     /// Binding for endpoints:
     /// - `GET /bulk-data/:id`
     /// - `GET /bulk-data/:type`
@@ -27,38 +30,45 @@ pub enum BulkDataResource<'a> {
     Filter(&'a str),
 }
 
+impl HttpResource<BulkDataList> for BulkDataListResource {
+    fn method(&self) -> Method {
+        Method::GET
+    }
+
+    fn path(&self) -> String {
+        format!("bulk-data")
+    }
+}
+
 impl<'a> HttpResource<BulkData> for BulkDataResource<'a> {
     fn method(&self) -> Method {
         Method::GET
     }
 
     fn path(&self) -> String {
-        let path = "bulk-data";
-
         match self {
-            All => path.into(),
-            Filter(f) => format!("{}/{}", path, f),
+            Filter(by) => format!("bulk-data/{}", by),
         }
     }
 }
 
-/// Basic struct representing bulk data container
+/// Basic struct representing bulk data list
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct BulkData {
+pub struct BulkDataList {
     #[serde(rename = "object")]
     pub kind: ResourceKind,
     pub has_more: bool,
-    pub data: Vec<BulkDataEntry>,
+    pub data: Vec<BulkData>,
 }
 
 /// A bulk data entry
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct BulkDataEntry {
+pub struct BulkData {
     #[serde(rename = "object")]
     pub item_kind: ResourceKind,
     pub id: String,
     #[serde(rename = "type")]
-    pub kind: EntryKind,
+    pub kind: BulkDataKind,
     #[serde(with = "iso8601")]
     pub updated_at: OffsetDateTime,
     pub uri: Url,
@@ -70,11 +80,11 @@ pub struct BulkDataEntry {
     pub content_encoding: String,
 }
 
-/// Kind of bulk data entry
+/// Kind of bulk data
 ///
 /// This refers to Scryfall `bulk_data.type` field
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub enum EntryKind {
+pub enum BulkDataKind {
     /// `type` -> `all_cards`
     #[serde(rename = "all_cards")]
     AllCards,

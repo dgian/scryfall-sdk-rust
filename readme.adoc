@@ -63,7 +63,8 @@ async fn main() -> Result<(), Error> {
 
 The following are currently implemented:
 
-- `BulkDataResource` -> https://scryfall.com/docs/api/bulk-data
+- `BulkDataListResource` -> https://scryfall.com/docs/api/bulk-data (list)
+- `BulkDataResource` -> https://scryfall.com/docs/api/bulk-data (single)
 - `CatalogResource` -> https://scryfall.com/docs/api/catalogs
 - `CardSymbolsResource` -> https://scryfall.com/docs/api/card-symbols/all
 - `ManaCostResource` -> https://scryfall.com/docs/api/card-symbols/parse-mana
