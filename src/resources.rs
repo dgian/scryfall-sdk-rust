@@ -7,6 +7,7 @@ pub mod bulk_data;
 pub mod catalog;
 pub mod card_symbols;
 pub mod card_sets;
+pub mod rulings;
 
 /// Represents an HTTP resource (endpoint)
 ///

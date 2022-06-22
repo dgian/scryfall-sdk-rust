@@ -12,6 +12,7 @@
 //! - <https://api.scryfall.com/catalog>
 //! - <https://api.scryfall.com/symbology>
 //! - <https://api.scryfall.com/sets>
+//! - <https://api.scryfall.com/cards/**/rulings>
 
 pub mod client;
 pub mod resources;
@@ -38,4 +39,5 @@ pub use resources::card_symbols::ManaCostResource;
 pub use resources::card_sets::CardSetResource;
 #[doc(inline)]
 pub use resources::card_sets::CardSetListResource;
-
+#[doc(inline)]
+pub use resources::rulings::RulingListResource;
