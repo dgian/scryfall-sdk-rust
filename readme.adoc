@@ -70,3 +70,4 @@ The following are currently implemented:
 - `ManaCostResource` -> https://scryfall.com/docs/api/card-symbols/parse-mana
 - `CardSetListResource` -> https://scryfall.com/docs/api/sets (list)
 - `CardSetResource` -> https://scryfall.com/docs/api/sets (single)
+- `RulingListResource` -> https://scryfall.com/docs/api/rulings
