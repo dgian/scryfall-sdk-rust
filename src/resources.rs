@@ -7,6 +7,7 @@ pub mod bulk_data;
 pub mod catalog;
 pub mod card_symbols;
 pub mod card_sets;
+pub mod cards;
 pub mod rulings;
 
 /// Represents an HTTP resource (endpoint)
@@ -21,6 +22,17 @@ pub trait HttpResource<R: for<'de> Deserialize<'de>> {
     ///
     /// The path should be relative to the `base_url` of [Scryfall](super::Scryfall)
     fn path(&self) -> String;
+
+    fn path_without_query(&self) -> String {
+        self.path()
+            .chars()
+            .take(self
+                .path()
+                .find("?")
+                .unwrap_or(self.path().len())
+            )
+            .collect()
+    }
 }
 
 /// Kind of resource
@@ -38,6 +50,10 @@ pub enum ResourceKind {
     /// `object` -> `card`
     #[serde(rename = "card")]
     Card,
+
+    /// `object` -> `card_face`
+    #[serde(rename = "card_face")]
+    CardFace,
 
     /// `object` -> `card_symbol`
     #[serde(rename = "card_symbol")]

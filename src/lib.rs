@@ -8,6 +8,7 @@
 //!
 //! Bindings for the following resources are implemented:
 //!
+//! - <https://api.scryfall.com/cards>
 //! - <https://api.scryfall.com/bulk-data>
 //! - <https://api.scryfall.com/catalog>
 //! - <https://api.scryfall.com/symbology>
@@ -27,6 +28,8 @@ pub use client::blocking::Scryfall as ScryfallBlocking;
 // -- Resources
 #[doc(inline)]
 pub use resources::HttpResource;
+#[doc(inline)]
+pub use resources::cards::CardResource;
 #[doc(inline)]
 pub use resources::bulk_data::BulkDataResource;
 #[doc(inline)]

@@ -39,30 +39,33 @@ and make a request with it using one of the <<_resources, provided resources>>.
 
 For example:
 
-.Get all bulk data (async)
+.Get a single card by Scryfall id (async)
 [source, rust]
 ----
-// uses...
+use std::error::Error;
+use scryfall_sdk_rust::{CardResource, Scryfall};
 
 #[tokio::main] // <1>
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn Error>> {
     let scryfall = Scryfall::default(); // <2>
 
-    let bulk_data = scryfall
-        .request(&BulkDataResource::All).await?; // <3>
+    let card = scryfall.request(
+        &CardResource::ById("f295b713-1d6a-43fd-910d-fb35414bf58a")
+    ).await?; // <3>
 
-    Ok(println!("{:?}", bulk_data))
+    Ok(println!("{:?}", card))
 }
 ----
 <1> Using https://crates.io/crates/tokio[tokio runtime] for the examples, but you can use anyone you like
 <2> https://api.scryfall.com[Default scryfall api].You can also instantiate the client using `::from_url(&str)` to pass a custom url.
-<3> Make an async request for getting all bulk data
+<3> Make an async request to retrieve the card's data
 
 [#_resources]
 == List of implemented resources
 
 The following are currently implemented:
 
+- `CardResource` -> https://scryfall.com/docs/api/cards (single)
 - `BulkDataListResource` -> https://scryfall.com/docs/api/bulk-data (list)
 - `BulkDataResource` -> https://scryfall.com/docs/api/bulk-data (single)
 - `CatalogResource` -> https://scryfall.com/docs/api/catalogs

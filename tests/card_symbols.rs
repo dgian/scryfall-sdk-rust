@@ -11,7 +11,8 @@ use scryfall_sdk_rust::{
         ResourceKind,
         card_symbols::{ColorSymbol, CardSymbol, CardSymbolList, ManaCost}
     },
-    ManaCostResource
+    ManaCostResource,
+    HttpResource
 };
 
 // -- SymbologyListResource tests

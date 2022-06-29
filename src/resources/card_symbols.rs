@@ -34,15 +34,6 @@ impl<'a> HttpResource<ManaCost> for ManaCostResource<'a> {
     }
 }
 
-impl<'a> ManaCostResource<'a> {
-    pub fn path_without_query(&self) -> String {
-        self.path()
-            .chars()
-            .take(self.path().find("?").unwrap_or(self.path().len()))
-            .collect()
-    }
-}
-
 /// Basic struct representing card symbol list
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct CardSymbolList {
@@ -111,21 +102,6 @@ mod tests {
         let resource = ManaCostResource("test");
 
         assert_eq!("symbology/parse-mana?cost=test", resource.path());
-        assert_eq!(Method::GET, resource.method());
-    }
-
-    #[test]
-    fn mana_cost_resource_should_return_path_without_query() {
-        let resource = ManaCostResource("test");
-
-        assert_eq!("symbology/parse-mana", resource.path_without_query());
-    }
-
-    #[test]
-    fn card_symbols_resource_should_return_path_without_query() {
-        let resource = CardSymbolsResource;
-
-        assert_eq!("symbology", resource.path());
         assert_eq!(Method::GET, resource.method());
     }
 }
