@@ -93,7 +93,7 @@ impl HttpResource<Catalog> for CatalogResource {
 pub struct Catalog {
     #[serde(rename = "object")]
     pub kind: ResourceKind,
-    pub uri: Url,
+    pub uri: Option<Url>,
     pub total_values: i64,
     pub data: Vec<String>,
 }

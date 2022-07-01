@@ -10,7 +10,10 @@ use scryfall_sdk_rust::{
     resources::{
         ResourceKind,
         card_symbols::ColorSymbol,
-        cards::{Card, CardFace, ImageUris, Legalities, Legality, Prices, PurchaseUris, RelatedUris}
+        cards::{Card, CardFace, ImageUris, Legalities, Legality, Prices, PurchaseUris, RelatedUris},
+        cards::{CardPage, CardPageResource, SearchQueryParams},
+        cards::{CardCatalogResource},
+        catalog::Catalog
     },
     Scryfall,
     ScryfallBlocking,
@@ -348,7 +351,6 @@ mod single {
 
 // -- CardPageResource tests
 mod page {
-    use scryfall_sdk_rust::resources::cards::{CardPage, CardPageResource, SearchQueryParams};
     use super::*;
 
     #[fixture]
@@ -686,5 +688,83 @@ mod page {
 
         endpoint.assert();
         assert_eq!(card_page, &response)
+    }
+}
+
+// -- CardCatalogResource tests
+mod catalog {
+    use super::*;
+
+    #[fixture]
+    #[once]
+    fn response() -> String {
+        indoc!(r#"
+        {
+          "object": "catalog",
+          "total_values": 2,
+          "data": [
+            "Thallid Soothsayer",
+            "Thallid Shell-Dweller"
+          ]
+        }
+        "#).into()
+    }
+
+    #[fixture]
+    #[once]
+    fn card_catalog() -> Catalog {
+        Catalog {
+            kind: ResourceKind::Catalog,
+            uri: None,
+            total_values: 2,
+            data: vec!["Thallid Soothsayer".into(), "Thallid Shell-Dweller".into(),]
+        }
+    }
+
+    #[rstest]
+    fn test_blocking_request(response: &String, card_catalog: &Catalog) {
+        let server = MockServer::start();
+        let resource = CardCatalogResource::Autocomplete("thallid s");
+
+        let endpoint = server.mock(|when, then| {
+                when.method(GET).path(format!("/{}", resource.path_without_query()));
+                then.status(200)
+                    .header("content-type", "application/json")
+                    .body(response);
+            });
+
+        let url = server.base_url();
+        let client = ScryfallBlocking::from_url(&url);
+
+        let response = client
+            .request(&resource)
+            .expect("Expected a valid Catalog response");
+
+        endpoint.assert();
+        assert_eq!(card_catalog, &response)
+    }
+
+    #[rstest]
+    #[tokio::test]
+    async fn test_async_request<'a>(response: &String, card_catalog: &Catalog) {
+        let server = MockServer::start_async().await;
+        let resource = CardCatalogResource::Autocomplete("thallid s");
+
+        let endpoint = server.mock(|when, then| {
+            when.method(GET).path(format!("/{}", resource.path_without_query()));
+            then.status(200)
+                .header("content-type", "application/json")
+                .body(response);
+        });
+
+        let url = server.base_url();
+        let client = Scryfall::from_url(&url);
+
+        let response = client
+            .request(&resource).await
+            .expect("Expected a valid Catalog response");
+
+        endpoint.assert();
+        assert_eq!(card_catalog, &response)
     }
 }

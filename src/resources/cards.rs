@@ -7,11 +7,17 @@ use serde::{Deserialize, Serialize};
 use time::Date;
 use url::Url;
 use strum_macros::Display;
+use CardCatalogResource::Autocomplete;
 use CardPageResource::Search;
 use CardResource::*;
 use crate::HttpResource;
 use crate::resources::card_symbols::ColorSymbol;
+use crate::resources::catalog::Catalog;
 use crate::resources::ResourceKind;
+
+// ---------------------------------------
+// --  HTTP resources  -------------------
+// ---------------------------------------
 
 /// Endpoints for `/cards/*` resource (single card)
 pub enum CardResource<'a> {
@@ -112,6 +118,18 @@ pub enum CardPageResource {
     Search(SearchQueryParams)
 }
 
+/// Endpoints for `/cards/*` resource (catalogs)
+pub enum CardCatalogResource<'a> {
+    /// Binding for endpoint `GET /cards/autocomplete`
+    ///
+    /// Returns a catalog of cards containing up to 20 card names,
+    /// used for autocompletion functionalities.
+    ///
+    /// See more info for this in the
+    /// [official Scryfall documentation](https://scryfall.com/docs/api/cards/autocomplete).
+    Autocomplete(&'a str),
+}
+
 impl<'a> HttpResource<Card> for CardResource<'a> {
     fn method(&self) -> Method {
         Method::GET
@@ -166,13 +184,29 @@ impl HttpResource<CardPage> for CardPageResource {
     }
 }
 
+impl<'a> HttpResource<Catalog> for CardCatalogResource<'a> {
+    fn method(&self) -> Method {
+        Method::GET
+    }
+
+    fn path(&self) -> String {
+        format!("cards/{}", match self {
+            Autocomplete(q) => format!("autocomplete?q={q}")
+        })
+    }
+}
+
+// ---------------------------------------
+// --  Model definitions  ----------------
+// ---------------------------------------
+
 /// Basic struct representing a card
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Card {
     #[serde(rename = "object")]
     pub kind: ResourceKind,
-    pub id: String,                     // TODO: uuid
-    pub oracle_id: String,              // TODO: uuid
+    pub id: String,                             // TODO: uuid
+    pub oracle_id: String,                      // TODO: uuid
     pub multiverse_ids: Vec<i64>,
     pub tcgplayer_id: Option<i64>,
     pub name: String,
@@ -479,6 +513,16 @@ mod tests {
         #[case] resource: CardPageResource,
         #[case] expected: &str
      ) {
+        assert_eq!(expected, resource.path());
+        assert_eq!(Method::GET, resource.method());
+    }
+
+    #[rstest]
+    #[case::autocomplete(CardCatalogResource::Autocomplete("test"), "cards/autocomplete?q=test")]
+    fn card_catalog_resource_should_return_path_and_method(
+        #[case] resource: CardCatalogResource,
+        #[case] expected: &str
+    ) {
         assert_eq!(expected, resource.path());
         assert_eq!(Method::GET, resource.method());
     }

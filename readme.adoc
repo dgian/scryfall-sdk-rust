@@ -95,6 +95,7 @@ The following are currently implemented:
 
 - `CardResource` -> https://scryfall.com/docs/api/cards (single)
 - `CardPageResource` -> https://scryfall.com/docs/api/cards (page/search)
+- `CardCatalogResource` -> https://scryfall.com/docs/api/cards/autocomplete
 - `BulkDataListResource` -> https://scryfall.com/docs/api/bulk-data (list)
 - `BulkDataResource` -> https://scryfall.com/docs/api/bulk-data (single)
 - `CatalogResource` -> https://scryfall.com/docs/api/catalogs

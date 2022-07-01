@@ -37,7 +37,7 @@ fn response() -> String {
 fn catalog() -> Catalog {
     Catalog {
         kind: ResourceKind::Catalog,
-        uri: "https://some-url.com".parse::<Url>().unwrap(),
+        uri: Some("https://some-url.com".parse::<Url>().unwrap()),
         total_values: 3,
         data: vec!["SomeValue".into(), "SomeValue".into(), "SomeValue".into()]
     }
