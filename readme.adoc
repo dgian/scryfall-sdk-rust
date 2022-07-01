@@ -62,7 +62,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 ==== Card search
 
-Scryfall provides a [very powerful search syntax](https://scryfall.com/docs/syntax) which you
+Scryfall provides a https://scryfall.com/docs/syntax[very powerful search syntax] which you
 can leverage in order to search for cards. *Note* currently the SDK provides only usage of row `q` string in the query parmaeter.
 Future versions will provide a Rust fluent api supporting the search keywords separately.
 
