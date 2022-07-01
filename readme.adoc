@@ -60,12 +60,41 @@ async fn main() -> Result<(), Box<dyn Error>> {
 <2> https://api.scryfall.com[Default scryfall api].You can also instantiate the client using `::from_url(&str)` to pass a custom url.
 <3> Make an async request to retrieve the card's data
 
+==== Card search
+
+Scryfall provides a [very powerful search syntax](https://scryfall.com/docs/syntax) which you
+can leverage in order to search for cards. *Note* currently the SDK provides only usage of row `q` string in the query parmaeter.
+Future versions will provide a Rust fluent api supporting the search keywords separately.
+
+.Find red creatures with 3 power (async)
+[source,rust]
+----
+use std::error::Error;
+use scryfall_sdk_rust::{CardPageResource, Scryfall};
+use scryfall_sdk_rust::resources::cards::SearchQueryParams;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let scryfall = Scryfall::default();
+
+    let search = CardPageResource::Search(
+        SearchQueryParams::with_q("c%3Ared+pow%3D3") // <1>
+    );
+
+    let cards = scryfall.request(&search).await?;
+
+    Ok(println!("{:?}", cards))
+}
+----
+<1> Construct the search query based on fulltext search syntax (c:red + pow=3)
+
 [#_resources]
 == List of implemented resources
 
 The following are currently implemented:
 
 - `CardResource` -> https://scryfall.com/docs/api/cards (single)
+- `CardPageResource` -> https://scryfall.com/docs/api/cards (page/search)
 - `BulkDataListResource` -> https://scryfall.com/docs/api/bulk-data (list)
 - `BulkDataResource` -> https://scryfall.com/docs/api/bulk-data (single)
 - `CatalogResource` -> https://scryfall.com/docs/api/catalogs
