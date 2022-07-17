@@ -10,6 +10,7 @@ use strum_macros::Display;
 use CardCatalogResource::Autocomplete;
 use CardPageResource::Search;
 use CardResource::*;
+use CardCollectionResource::*;
 use crate::HttpResource;
 use crate::resources::card_symbols::ColorSymbol;
 use crate::resources::catalog::Catalog;
@@ -130,11 +131,32 @@ pub enum CardCatalogResource<'a> {
     Autocomplete(&'a str),
 }
 
-impl<'a> HttpResource<Card> for CardResource<'a> {
-    fn method(&self) -> Method {
-        Method::GET
-    }
+/// Endpoints for `/cards/collection` resource
+pub enum CardCollectionResource {
+    /// Binding for endpoint `POST /cards/collection`
+    /// 
+    /// Accepts a JSON array of card identifiers, 
+    /// and returns a List object with the collection of requested cards.
+    /// 
+    /// Available identifiers are the following:
+    /// 
+    /// | identifier(s)          | usage                                                  |
+    /// |------------------------|--------------------------------------------------------|
+    /// | id                     | find a card by Scryfall id                             |
+    /// | mtgo_id                | find a card by MTGO id                                 |
+    /// | multiverse_id          | find a card by Multiverse id                           |
+    /// | oracle_id              | find a card by Oracle id                               |
+    /// | illustration_id        | find a card by illustration id (preferred scans)       |
+    /// | name                   | find a card by name (newest)                           |
+    /// | set + name             | find a card by combination of set and card name        |
+    /// | set + collector_number | find a card by combination of set and collector number |
+    ///
+    /// See more info for this in the 
+    /// [official Scryfall documentation](https://scryfall.com/docs/api/cards/collection).
+    WithIdentifiers(CardIdentifiers),
+}
 
+impl<'a> HttpResource<Card> for CardResource<'a> {
     fn path(&self) -> String {
         format!("cards/{}", match self {
             ById(id) => id.to_string(),
@@ -173,10 +195,6 @@ impl<'a> HttpResource<Card> for CardResource<'a> {
 }
 
 impl HttpResource<CardPage> for CardPageResource {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         format!("cards/search{}", match self {
             Search(params) => params.as_query_str()
@@ -185,14 +203,30 @@ impl HttpResource<CardPage> for CardPageResource {
 }
 
 impl<'a> HttpResource<Catalog> for CardCatalogResource<'a> {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         format!("cards/{}", match self {
             Autocomplete(q) => format!("autocomplete?q={q}")
         })
+    }
+}
+
+impl HttpResource<CardCollection> for CardCollectionResource {
+    fn method(&self) -> Method {
+        match self {
+            WithIdentifiers(_) => Method::POST,
+        }
+    }
+
+    fn path(&self) -> String { 
+        match self {
+            WithIdentifiers(_) => "cards/collection".into()
+        }
+    }
+
+    fn json(&self) -> Option<String> {
+        match self {
+            WithIdentifiers(r) => serde_json::to_string(r).ok(),
+        }
     }
 }
 
@@ -482,6 +516,61 @@ pub enum OrderDirection {
     Desc,
 }
 
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+pub struct CardCollection {
+    #[serde(rename = "object")]
+    pub kind: ResourceKind,
+
+    pub not_found: Vec<CardIdentifier>,
+
+    #[serde(rename = "data")]
+    pub cards: Vec<Card>,
+}
+
+#[derive(Debug, Serialize, PartialEq)]
+pub struct CardIdentifiers {
+    pub identifiers: Vec<CardIdentifier>
+}
+
+#[derive(Debug, Display, Serialize, Deserialize, PartialEq)]
+#[serde(untagged)]
+pub enum CardIdentifier {
+    IllustrationId { 
+        #[serde(rename="illustration_id")] 
+        val: String,
+    },
+    MtgoId { 
+        #[serde(rename="mtgo_id")] 
+        val: String,
+    },
+    MutliverseId { 
+        #[serde(rename="multiverse_id")] 
+        val: u32,
+    },
+    Name { 
+        #[serde(rename="name")] 
+        val: String,
+    },
+    OracleId { 
+        #[serde(rename="oracle_id")] 
+        val: String,
+    },
+    ScryfallId { 
+        #[serde(rename="id")] 
+        val: String,
+    },
+    SetAndName { 
+        set: String,
+        name: String, 
+    },
+    SetAndNumber {
+        set: String,
+
+        #[serde(rename="collector_number")] 
+        number: String,
+    },
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -525,6 +614,21 @@ mod tests {
     ) {
         assert_eq!(expected, resource.path());
         assert_eq!(Method::GET, resource.method());
+    }
+
+    #[rstest]
+    fn card_collection_resource_should_return_path_method_and_json_body() {
+        let resource = CardCollectionResource::WithIdentifiers(
+            CardIdentifiers {
+                identifiers: vec![
+                    CardIdentifier::ScryfallId { val: "123".into() }
+                ]
+            }
+        );
+
+        assert_eq!("cards/collection", resource.path());
+        assert_eq!(Method::POST, resource.method());
+        assert_eq!(String::from("{\"identifiers\":[{\"id\":\"123\"}]}"), resource.json().unwrap());
     }
 
     #[rstest]

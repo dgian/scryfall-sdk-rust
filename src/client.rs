@@ -46,10 +46,16 @@ impl<'a> Scryfall<'a> {
     {
         let url = format!("{}/{}", self.base_url, resource.path());
 
-        self.http_client()
+        let mut req = self.http_client()
             .request(resource.method(), url)
-            .send().await?
-            .json().await
+            .header("Content-Type", "application/json");
+       
+        if let Some(b) = resource.json() {
+            req = req.body(b);
+        }
+
+        req.send().await?
+           .json().await
     }
 }
 

@@ -35,6 +35,8 @@ pub use resources::cards::CardPageResource;
 #[doc(inline)]
 pub use resources::cards::CardCatalogResource;
 #[doc(inline)]
+pub use resources::cards::CardCollectionResource;
+#[doc(inline)]
 pub use resources::bulk_data::BulkDataResource;
 #[doc(inline)]
 pub use resources::catalog::CatalogResource;

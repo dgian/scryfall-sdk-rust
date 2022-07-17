@@ -16,13 +16,39 @@ pub mod rulings;
 /// in order to make a request to the api.
 pub trait HttpResource<R: for<'de> Deserialize<'de>> {
     /// Defines the HTTP method for the endpoint
-    fn method(&self) -> Method;
+    fn method(&self) -> Method {
+        Method::GET
+    }
 
     /// Defines the path for the endpoint
     ///
     /// The path should be relative to the `base_url` of [Scryfall](super::Scryfall)
     fn path(&self) -> String;
 
+    /// Defines the (optional) json body when requesting the endpoint.
+    /// 
+    /// This is useful in cases of POST/PUT/PATCH etc.
+    /// By default it is `None`.
+    fn json(&self) -> Option<String> {
+        None
+    }
+
+    /// Strips the query parameters (if any) from the endpoint path
+    /// 
+    /// # Example
+    /// ```
+    /// use scryfall_sdk_rust::HttpResource;
+    /// 
+    /// struct SomeResource;
+    /// impl HttpResource<String> for SomeResource {
+    ///     fn path(&self) -> String {
+    ///         "somepath?aQueryParam=123".into()
+    ///     }
+    /// }
+    ///
+    /// let res = SomeResource;
+    /// assert_eq!("somepath", res.path_without_query())
+    /// ```
     fn path_without_query(&self) -> String {
         self.path()
             .chars()
