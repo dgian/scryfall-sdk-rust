@@ -88,6 +88,58 @@ async fn main() -> Result<(), Box<dyn Error>> {
 ----
 <1> Construct the search query based on fulltext search syntax (c:red + pow=3)
 
+==== Error response handling
+
+In the previous very basic examples, any kind of error,
+either an error response from the API, or a client error
+is propagated to the `Result` return of `main` function.
+This is done through the special `?` rust operator which propagates
+errors to the caller of a function.
+
+In reality, you will probably want to handle those errors at some point,
+at least the error responses (e.g. 404) from the API. 
+The `request` function of both clients returns a `Result<M, ErrorBody>`
+which should contain either the Model for the expected object (e.g. Card) in case of success, or an `ErrorBody` in case of an error. For more info on the error response payloads (ErrorBody) see https://scryfall.com/docs/api/errors[Scryfall documentation].
+
+An example of a possible error handling is the following
+
+[source,rust]
+----
+use std::error::Error;
+use scryfall_sdk_rust::{CardResource, Scryfall};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let scryfall = Scryfall::default();
+
+    let card = scryfall.request(
+        &CardResource::ById("f295b713-1d6a-43fd-910d-fb35414bf58a")
+    ).await; // <1>
+
+    println!("{:?}", card
+        .map_err(|e| format!("Error {}: {}", e.status, e.details)
+    )); // <2>
+
+    let error = scryfall.request(
+        &CardResource::ById("invalid")
+    ).await; // <3>
+
+    Ok(println!("{:?}", error
+        .map_err(|e| format!("Error {}: {}", e.status, e.details))
+    )) // <4>
+}
+----
+<1> Get the details for an existing card. Notice the absence of `?` after `await` as opposed to the previous example.
+<2> Printing here, will print the card details and not error as `map_err` does not affect the `Response::Ok` type of `Result`
+<3> Get the details of a non-existing card should return an error (404)
+<4> Printing here will print the details of the error response (status and detailed message) as the `Result` is now a `Response::Err` containing the respective `ErrorBody`
+
+For client errors, e.g. when the Scryfall API server cannot be resolved,
+or when the json response cannot be decoded for some reason,
+a special `ErrorBody` will be returned. This will have `code = CLIENT_ERR`
+and `status = 599` with `details` containing the original error cause.
+
+
 [#_resources]
 == List of implemented resources
 

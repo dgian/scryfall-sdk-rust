@@ -4,12 +4,19 @@
 //!
 //! Blocking client can be used also by enabling the **blocking** optional feature.
 
-use reqwest::{Client, Error};
+use reqwest::Error;
+use reqwest::RequestBuilder;
+use reqwest::Client;
 use serde::Deserialize;
 use crate::HttpResource;
+use crate::resources::Response;
+use crate::resources::errors::ErrorBody;
 
 #[cfg(feature = "blocking")]
 pub mod blocking;
+
+type ResponseResult<M> = Result<Response<M>, Error>;
+type BodyResult<M> = Result<M, ErrorBody>;
 
 /// Scryfall async client
 #[derive(Clone)]
@@ -40,9 +47,24 @@ impl<'a> Scryfall<'a> {
     }
 
     /// Makes an HTTP request to an endpoint
-    pub async fn request<R, O>(&self, resource: &R) -> Result<O, Error>
-        where R: HttpResource<O>,
-              O: for<'de> Deserialize<'de>
+    pub async fn request<R, M>(&self, resource: &R) -> BodyResult<M>
+        where R: HttpResource<M>,
+              M: for<'de> Deserialize<'de>
+    {
+        let req = self.build_request(resource);
+
+        match req.send().await {
+            Ok(req_ok) => {
+                let res = req_ok.json::<Response<M>>().await;
+                self.extract_body(res)
+            },
+            Err(e) => Result::Err(ErrorBody::from_reqwest_error(e)),
+        }
+    }
+
+    fn build_request<R, M>(&self, resource: &R) -> RequestBuilder
+        where R: HttpResource<M>,
+              M: for<'de> Deserialize<'de>
     {
         let url = format!("{}/{}", self.base_url, resource.path());
 
@@ -54,8 +76,19 @@ impl<'a> Scryfall<'a> {
             req = req.body(b);
         }
 
-        req.send().await?
-           .json().await
+        req
+    }
+
+    fn extract_body<M>(&self, result: ResponseResult<M>) -> BodyResult<M> 
+        where M: for<'de> Deserialize<'de>
+    {
+        match result {
+            Ok(response) => match response {
+                Response::Ok(body_ok) => Result::Ok(body_ok),
+                Response::Err(body_err) => Result::Err(body_err),
+            }    
+            Err(e) => Result::Err(ErrorBody::from_reqwest_error(e)),
+        }
     }
 }
 

@@ -1,13 +1,15 @@
 //! Scryfall API resources (root module)
 
+use crate::resources::errors::ErrorBody;
 use reqwest::Method;
 use serde::{Deserialize, Serialize};
 
 pub mod bulk_data;
-pub mod catalog;
-pub mod card_symbols;
 pub mod card_sets;
+pub mod card_symbols;
 pub mod cards;
+pub mod catalog;
+pub mod errors;
 pub mod rulings;
 
 /// Represents an HTTP resource (endpoint)
@@ -61,6 +63,23 @@ pub trait HttpResource<R: for<'de> Deserialize<'de>> {
     }
 }
 
+/// Represents a Response with two different states:
+/// 
+/// - Ok -> containing a Model representation for the resource (e.g. Card)
+/// - Err -> containing an error response with a specified ErrorBody (e.g. 404 errors)
+/// 
+/// The distinction is done based on the `object` field in the response
+/// which is de-serialized in ResourceKind::Error when it is `error` and to everything
+/// else when there is real response with the respective object.__rust_force_expr!
+/// 
+/// You can see more info on error response model in [Scryfall offical API documenation.](https://scryfall.com/docs/api/errors)
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(untagged)]
+pub enum Response<M>{
+    Ok(M),
+    Err(ErrorBody),
+}
+
 /// Kind of resource
 ///
 /// Scryfall API uses `object` field on each resource to denote its type.
@@ -88,6 +107,10 @@ pub enum ResourceKind {
     /// `object` -> `catalog`
     #[serde(rename = "catalog")]
     Catalog,
+
+    /// `object` -> `error`
+    #[serde(rename = "error")]
+    Error,
 
     /// `object` -> `list`
     #[serde(rename = "list")]
