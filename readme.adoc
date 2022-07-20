@@ -7,7 +7,7 @@
 :highlightjs-theme: monokai-sublime
 
 image:https://img.shields.io/github/workflow/status/dgian/scryfall-sdk-rust/CI?label=CI&style=for-the-badge[Build Status (GitHub Actions),link=https://github.com/dgian/scryfall-sdk-rust/actions]
-image:https://img.shields.io/docsrs/scryfall_sdk_rust?label=docs.rs&style=for-the-badge[link="http//docs.rs/scryfall_sdk_rust]
+image:https://img.shields.io/docsrs/scryfall_sdk_rust?label=docs.rs&style=for-the-badge[link="http//docs.rs/scryfall_sdk_rust"]
 image:https://img.shields.io/crates/v/scryfall_sdk_rust?style=for-the-badge[link="https://crates.io/crates/scryfall_sdk_rust"]
 
 This is a basic SDK written in https://www.rust-lang.org[Rust] for the amazing https://scryfall.com[Scryfall search-engine], a powerful search tool for Magic: The Gathering cards, sets etc.
