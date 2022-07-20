@@ -5,6 +5,7 @@
 use reqwest::Method;
 use serde::{Deserialize, Serialize};
 use time::Date;
+use uuid::Uuid;
 use url::Url;
 use strum_macros::Display;
 use CardCatalogResource::Autocomplete;
@@ -239,8 +240,8 @@ impl HttpResource<CardCollection> for CardCollectionResource {
 pub struct Card {
     #[serde(rename = "object")]
     pub kind: ResourceKind,
-    pub id: String,                             // TODO: uuid
-    pub oracle_id: String,                      // TODO: uuid
+    pub id: Uuid,
+    pub oracle_id: Uuid,
     pub multiverse_ids: Vec<i64>,
     pub tcgplayer_id: Option<i64>,
     pub name: String,
@@ -281,10 +282,10 @@ pub struct Card {
     pub collector_number: String,
     pub digital: bool,
     pub rarity: String,                         // TODO: enum
-    pub card_back_id: Option<String>,           // TODO: uuid
+    pub card_back_id: Option<Uuid>,
     pub artist: String,
-    pub artist_ids: Vec<String>,                // TODO: uuid
-    pub illustration_id: Option<String>,        // TODO: uuid
+    pub artist_ids: Vec<Uuid>,
+    pub illustration_id: Option<Uuid>,
     pub border_color: String,
     pub frame: String,
     pub security_stamp: Option<String>,
@@ -319,8 +320,8 @@ pub struct CardFace {
     pub type_line: String,
     pub oracle_text: String,
     pub artist: Option<String>,
-    pub artist_id: Option<String>,              // TODO: uuid
-    pub illustration_id: Option<String>,        // TODO: uuid
+    pub artist_id: Option<Uuid>,
+    pub illustration_id: Option<Uuid>,
     pub flavor_name: Option<String>,
 }
 

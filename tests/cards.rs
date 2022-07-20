@@ -4,6 +4,7 @@ use indoc::indoc;
 use rstest::{fixture, rstest};
 use time::macros::date;
 use url::Url;
+use uuid::uuid;
 
 use scryfall_sdk_rust::{
     HttpResource,
@@ -165,8 +166,8 @@ mod single {
     fn card() -> Card {
         Card {
             kind: ResourceKind::Card,
-            id: "f295b713-1d6a-43fd-910d-fb35414bf58a".into(),
-            oracle_id: "7bc3f92f-68a2-4934-afc4-89f6d0e8cf98".into(),
+            id: uuid!("f295b713-1d6a-43fd-910d-fb35414bf58a"),
+            oracle_id: uuid!("7bc3f92f-68a2-4934-afc4-89f6d0e8cf98"),
             multiverse_ids: vec![567508],
             tcgplayer_id: Some(273737),
             name: "Dusk // Dawn".into(),
@@ -199,8 +200,8 @@ mod single {
                     type_line: "Sorcery".into(),
                     oracle_text: "Destroy all creatures with power 3 or greater.".into(),
                     artist: Some("Kasia 'Kafis' Zielińska".into()),
-                    artist_id: Some("a662cb71-4770-4b49-8b03-2cf8497049a7".into()),
-                    illustration_id: Some("3134f77c-7a7d-48e0-99a6-4f323868e1ef".into()),
+                    artist_id: Some(uuid!("a662cb71-4770-4b49-8b03-2cf8497049a7")),
+                    illustration_id: Some(uuid!("3134f77c-7a7d-48e0-99a6-4f323868e1ef")),
                     flavor_name: None,
                 }
             ]),
@@ -246,10 +247,10 @@ mod single {
             collector_number: "691".into(),
             digital: false,
             rarity: "rare".into(),
-            card_back_id: Some("0aeebaf5-8c7d-4636-9e82-8c27447861f7".into()),
+            card_back_id: Some(uuid!("0aeebaf5-8c7d-4636-9e82-8c27447861f7")),
             artist: "Kasia 'Kafis' Zielińska".into(),
-            artist_ids: vec!["a662cb71-4770-4b49-8b03-2cf8497049a7".into()],
-            illustration_id: Some("3134f77c-7a7d-48e0-99a6-4f323868e1ef".into()),
+            artist_ids: vec![uuid!("a662cb71-4770-4b49-8b03-2cf8497049a7")],
+            illustration_id: Some(uuid!("3134f77c-7a7d-48e0-99a6-4f323868e1ef")),
             border_color: "black".into(),
             frame: "2015".into(),
             security_stamp: Some("oval".into()),
@@ -506,8 +507,8 @@ mod page {
             data: vec![
                 Card {
                     kind: ResourceKind::Card,
-                    id: "f295b713-1d6a-43fd-910d-fb35414bf58a".into(),
-                    oracle_id: "7bc3f92f-68a2-4934-afc4-89f6d0e8cf98".into(),
+                    id: uuid!("f295b713-1d6a-43fd-910d-fb35414bf58a"),
+                    oracle_id: uuid!("7bc3f92f-68a2-4934-afc4-89f6d0e8cf98"),
                     multiverse_ids: vec![567508],
                     tcgplayer_id: Some(273737),
                     name: "Dusk // Dawn".into(),
@@ -540,8 +541,8 @@ mod page {
                             type_line: "Sorcery".into(),
                             oracle_text: "Destroy all creatures with power 3 or greater.".into(),
                             artist: Some("Kasia 'Kafis' Zielińska".into()),
-                            artist_id: Some("a662cb71-4770-4b49-8b03-2cf8497049a7".into()),
-                            illustration_id: Some("3134f77c-7a7d-48e0-99a6-4f323868e1ef".into()),
+                            artist_id: Some(uuid!("a662cb71-4770-4b49-8b03-2cf8497049a7")),
+                            illustration_id: Some(uuid!("3134f77c-7a7d-48e0-99a6-4f323868e1ef")),
                             flavor_name: None,
                         }
                     ]),
@@ -587,10 +588,10 @@ mod page {
                     collector_number: "691".into(),
                     digital: false,
                     rarity: "rare".into(),
-                    card_back_id: Some("0aeebaf5-8c7d-4636-9e82-8c27447861f7".into()),
+                    card_back_id: Some(uuid!("0aeebaf5-8c7d-4636-9e82-8c27447861f7")),
                     artist: "Kasia 'Kafis' Zielińska".into(),
-                    artist_ids: vec!["a662cb71-4770-4b49-8b03-2cf8497049a7".into()],
-                    illustration_id: Some("3134f77c-7a7d-48e0-99a6-4f323868e1ef".into()),
+                    artist_ids: vec![uuid!("a662cb71-4770-4b49-8b03-2cf8497049a7")],
+                    illustration_id: Some(uuid!("3134f77c-7a7d-48e0-99a6-4f323868e1ef")),
                     border_color: "black".into(),
                     frame: "2015".into(),
                     security_stamp: Some("oval".into()),
@@ -922,8 +923,8 @@ mod collection {
             cards: vec![
                 Card {
                     kind: ResourceKind::Card,
-                    id: "f295b713-1d6a-43fd-910d-fb35414bf58a".into(),
-                    oracle_id: "7bc3f92f-68a2-4934-afc4-89f6d0e8cf98".into(),
+                    id: uuid!("f295b713-1d6a-43fd-910d-fb35414bf58a"),
+                    oracle_id: uuid!("7bc3f92f-68a2-4934-afc4-89f6d0e8cf98"),
                     multiverse_ids: vec![567508],
                     tcgplayer_id: Some(273737),
                     name: "Dusk // Dawn".into(),
@@ -956,8 +957,8 @@ mod collection {
                             type_line: "Sorcery".into(),
                             oracle_text: "Destroy all creatures with power 3 or greater.".into(),
                             artist: Some("Kasia 'Kafis' Zielińska".into()),
-                            artist_id: Some("a662cb71-4770-4b49-8b03-2cf8497049a7".into()),
-                            illustration_id: Some("3134f77c-7a7d-48e0-99a6-4f323868e1ef".into()),
+                            artist_id: Some(uuid!("a662cb71-4770-4b49-8b03-2cf8497049a7")),
+                            illustration_id: Some(uuid!("3134f77c-7a7d-48e0-99a6-4f323868e1ef")),
                             flavor_name: None,
                         }
                     ]),
@@ -1003,10 +1004,10 @@ mod collection {
                     collector_number: "691".into(),
                     digital: false,
                     rarity: "rare".into(),
-                    card_back_id: Some("0aeebaf5-8c7d-4636-9e82-8c27447861f7".into()),
+                    card_back_id: Some(uuid!("0aeebaf5-8c7d-4636-9e82-8c27447861f7")),
                     artist: "Kasia 'Kafis' Zielińska".into(),
-                    artist_ids: vec!["a662cb71-4770-4b49-8b03-2cf8497049a7".into()],
-                    illustration_id: Some("3134f77c-7a7d-48e0-99a6-4f323868e1ef".into()),
+                    artist_ids: vec![uuid!("a662cb71-4770-4b49-8b03-2cf8497049a7")],
+                    illustration_id: Some(uuid!("3134f77c-7a7d-48e0-99a6-4f323868e1ef")),
                     border_color: "black".into(),
                     frame: "2015".into(),
                     security_stamp: Some("oval".into()),

@@ -10,16 +10,17 @@ blocking = []
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqwest = { version = "0.11.10", features = ["json", "blocking"] }
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = "1.0.81"
-strum = "0.24.1"
-strum_macros = "0.24.2"
-time = { version = "0.3.10", features = ["serde-well-known", "serde-human-readable", "macros"] }
-url = { version = "2.2.2", features = ["serde"] }
+reqwest = { version = "0.11", features = ["json", "blocking"] }
+serde = { version = "~1.0", features = ["derive"] }
+serde_json = "~1.0"
+strum = "0.24"
+strum_macros = "0.24"
+time = { version = "0.3", features = ["serde-well-known", "serde-human-readable", "macros"] }
+url = { version = "2.2", features = ["serde"] }
+uuid = { version = "1.1", features = ["serde"] }
 
 [dev-dependencies]
 httpmock = "0.6"
-indoc = "1.0.6"
-rstest = "0.13.0"
+indoc = "1.0"
+rstest = "0.13"
 tokio = { version = "1.20", features = ["macros", "tokio-macros"] }

@@ -1,7 +1,8 @@
 //! Module containing definitions for error object(s)
 
 use std::error::Error;
-use std::fmt::Display;
+use std::fmt::{Display, Formatter};
+use std::result::Result;
 use crate::resources::ResourceKind;
 use serde::{Deserialize, Serialize};
 
@@ -26,7 +27,7 @@ pub struct ErrorBody {
 }
 
 impl Display for ErrorBody {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::result::Result<(), std::fmt::Error> { 
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), std::fmt::Error> { 
         write!(f, "{}: {}", self.code, self.details)
     }
 }
