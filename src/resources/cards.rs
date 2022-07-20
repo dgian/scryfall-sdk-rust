@@ -238,154 +238,154 @@ impl HttpResource<CardCollection> for CardCollectionResource {
 /// Basic struct representing a card
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Card {
-    #[serde(rename = "object")]
-    pub kind: ResourceKind,
-    pub id: Uuid,
-    pub oracle_id: Uuid,
-    pub multiverse_ids: Vec<i64>,
-    pub tcgplayer_id: Option<i64>,
-    pub name: String,
-    pub lang: String,
-    pub released_at: Date,
-    pub uri: Url,
-    pub scryfall_uri: Url,
-    pub layout: String,                         // TODO: enum??
-    pub highres_image: bool,
-    pub image_status: String,                   // TODO: enum??
-    pub image_uris: Option<ImageUris>,
-    pub mana_cost: Option<String>,
-    pub cmc: f64,
-    pub type_line: String,
-    pub colors: Option<Vec<ColorSymbol>>,
-    pub color_identity: Vec<ColorSymbol>,
-    pub keywords: Vec<String>,
-    pub card_faces: Option<Vec<CardFace>>,
-    pub legalities: Legalities,
-    pub games: Vec<String>,                     // TODO: enum??
-    pub reserved: bool,
-    pub foil: bool,
-    pub nonfoil: bool,
-    pub finishes: Vec<String>,                  // TODO: enum??
-    pub oversized: bool,
-    pub promo: bool,
-    pub reprint: bool,
-    pub variation: bool,
-    pub set_id: String,
-    pub set: String,
-    pub set_name: String,
-    pub set_type: String,
-    pub set_uri: Url,
-    pub set_search_uri: Url,
-    pub scryfall_set_uri: Url,
-    pub rulings_uri: Url,
-    pub prints_search_uri: Url,
-    pub collector_number: String,
-    pub digital: bool,
-    pub rarity: String,                         // TODO: enum
-    pub card_back_id: Option<Uuid>,
     pub artist: String,
     pub artist_ids: Vec<Uuid>,
-    pub illustration_id: Option<Uuid>,
-    pub border_color: String,
-    pub frame: String,
-    pub security_stamp: Option<String>,
-    pub full_art: bool,
-    pub textless: bool,
     pub booster: bool,
-    pub story_spotlight: bool,
+    pub border_color: String,
+    pub card_back_id: Option<Uuid>,
+    pub card_faces: Option<Vec<CardFace>>,
+    pub cmc: f64,
+    pub collector_number: String,
+    pub color_identity: Vec<ColorSymbol>,
+    pub colors: Option<Vec<ColorSymbol>>,
+    pub digital: bool,
     pub edhrec_rank: Option<i64>,
+    pub finishes: Vec<String>,                  // TODO: enum??
+    pub foil: bool,
+    pub frame: String,
+    pub full_art: bool,
+    pub games: Vec<String>,                     // TODO: enum??
+    pub highres_image: bool,
+    pub id: Uuid,
+    pub illustration_id: Option<Uuid>,
+    pub image_status: String,                   // TODO: enum??
+    pub image_uris: Option<ImageUris>,
+    pub keywords: Vec<String>,
+    #[serde(rename = "object")]
+    pub kind: ResourceKind,
+    pub lang: String,
+    pub layout: String,                         // TODO: enum??
+    pub legalities: Legalities,
+    pub mana_cost: Option<String>,
+    pub multiverse_ids: Vec<i64>,
+    pub name: String,
+    pub nonfoil: bool,
+    pub oracle_id: Uuid,
+    pub oversized: bool,
     pub penny_rank: Option<i64>,
     pub prices: Prices,
-    pub related_uris: Option<RelatedUris>,
+    pub prints_search_uri: Url,
+    pub promo: bool,
     pub purchase_uris: Option<PurchaseUris>,
+    pub rarity: String,                         // TODO: enum
+    pub related_uris: Option<RelatedUris>,
+    pub released_at: Date,
+    pub reprint: bool,
+    pub reserved: bool,
+    pub rulings_uri: Url,
+    pub scryfall_set_uri: Url,
+    pub scryfall_uri: Url,
+    pub security_stamp: Option<String>,
+    pub set: String,
+    pub set_id: String,
+    pub set_name: String,
+    pub set_search_uri: Url,
+    pub set_type: String,
+    pub set_uri: Url,
+    pub story_spotlight: bool,
+    pub tcgplayer_id: Option<i64>,
+    pub textless: bool,
+    pub type_line: String,
+    pub uri: Url,
+    pub variation: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct CardPage {
+    pub data: Vec<Card>,
+    pub has_more: bool,
     #[serde(rename = "object")]
     pub kind: ResourceKind,
-    pub total_cards: i64,
-    pub has_more: bool,
     pub next_page: Option<Url>,
-    pub data: Vec<Card>,
+    pub total_cards: i64,
 }
 
 /// A struct representing the face of a card
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct CardFace {
-    #[serde(rename = "object")]
-    pub kind: ResourceKind,
-    pub name: String,
-    pub mana_cost: String,
-    pub type_line: String,
-    pub oracle_text: String,
     pub artist: Option<String>,
     pub artist_id: Option<Uuid>,
-    pub illustration_id: Option<Uuid>,
     pub flavor_name: Option<String>,
+    pub illustration_id: Option<Uuid>,
+    #[serde(rename = "object")]
+    pub kind: ResourceKind,
+    pub mana_cost: String,
+    pub name: String,
+    pub oracle_text: String,
+    pub type_line: String,
 }
 
 /// Container for image URLs
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct ImageUris {
-    pub small: Url,
-    pub normal: Url,
-    pub large: Url,
-    pub png: Url,
     pub art_crop: Url,
     pub border_crop: Url,
+    pub large: Url,
+    pub normal: Url,
+    pub png: Url,
+    pub small: Url,
 }
 
 /// Container for card legalities
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Legalities {
-    pub standard: Legality,
-    pub future: Legality,
-    pub historic: Legality,
-    pub gladiator: Legality,
-    pub pioneer: Legality,
-    pub explorer: Legality,
-    pub modern: Legality,
-    pub legacy: Legality,
-    pub pauper: Legality,
-    pub vintage: Legality,
-    pub penny: Legality,
-    pub commander: Legality,
-    pub brawl: Legality,
-    pub historicbrawl: Legality,
     pub alchemy: Legality,
-    pub paupercommander: Legality,
+    pub brawl: Legality,
+    pub commander: Legality,
     pub duel: Legality,
+    pub explorer: Legality,
+    pub future: Legality,
+    pub gladiator: Legality,
+    pub historic: Legality,
+    pub historicbrawl: Legality,
+    pub legacy: Legality,
+    pub modern: Legality,
     pub oldschool: Legality,
+    pub pauper: Legality,
+    pub paupercommander: Legality,
+    pub penny: Legality,
+    pub pioneer: Legality,
     pub premodern: Legality,
+    pub standard: Legality,
+    pub vintage: Legality,
 }
 
 /// Container for card prices
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Prices {
-    pub usd: Option<String>,
-    pub usd_foil: Option<String>,
-    pub usd_etched: Option<String>,
     pub eur: Option<String>,
     pub eur_foil: Option<String>,
     pub tix: Option<String>,
+    pub usd: Option<String>,
+    pub usd_etched: Option<String>,
+    pub usd_foil: Option<String>,
 }
 
 /// Container for card purchase URLs
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct PurchaseUris {
-    pub tcgplayer: Url,
-    pub cardmarket: Url,
     pub cardhoarder: Url,
+    pub cardmarket: Url,
+    pub tcgplayer: Url,
 }
 
 /// Container for other card related URLs
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct RelatedUris {
+    pub edhrec: Option<Url>,
     pub gatherer: Option<Url>,
     pub tcgplayer_infinite_articles: Option<Url>,
     pub tcgplayer_infinite_decks: Option<Url>,
-    pub edhrec: Option<Url>,
 }
 
 /// Card legality enum
@@ -405,14 +405,14 @@ pub enum Legality {
 }
 
 pub struct SearchQueryParams {
-    pub q: String,
-    pub unique: Option<UniqueMode>,
-    pub order: Option<OrderField>,
     pub dir: Option<OrderDirection>,
     pub include_extras: Option<bool>,
     pub include_multilingual: Option<bool>,
     pub include_variations: Option<bool>,
+    pub order: Option<OrderField>,
     pub page: Option<u32>,
+    pub q: String,
+    pub unique: Option<UniqueMode>,
 }
 
 impl SearchQueryParams {
