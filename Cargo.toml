@@ -7,7 +7,7 @@ categories = ["api-bindings"]
 keywords = ["sdk", "scryfall", "http-api-binding", "http"]
 license = "MIT OR Apache-2.0"
 homepage = "https://github.com/dgian/scryfall-sdk-rust"
-documenation = "https://docs.rs/scryfall-sdk-rust"
+documenation = "https://docs.rs/scryfall_sdk_rust"
 repository = "https://github.com/dgian/scryfall-sdk-rust"
 readme = "crates-readme.md"
 
