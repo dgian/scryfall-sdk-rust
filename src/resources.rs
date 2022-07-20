@@ -87,44 +87,39 @@ pub enum Response<M>{
 /// Essentially this includes all the available core resources from the API
 /// plus `list` which refers to a collection of resources.
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[serde(rename_all = "snake_case")]
 pub enum ResourceKind {
     /// `object` -> `bulk_data`
-    #[serde(rename = "bulk_data")]
     BulkData,
 
     /// `object` -> `card`
-    #[serde(rename = "card")]
     Card,
 
     /// `object` -> `card_face`
-    #[serde(rename = "card_face")]
     CardFace,
 
     /// `object` -> `card_symbol`
-    #[serde(rename = "card_symbol")]
     CardSymbol,
 
     /// `object` -> `catalog`
-    #[serde(rename = "catalog")]
     Catalog,
 
     /// `object` -> `error`
-    #[serde(rename = "error")]
     Error,
 
     /// `object` -> `list`
-    #[serde(rename = "list")]
     List,
 
     /// `object` -> `mana_cost`
-    #[serde(rename = "mana_cost")]
     ManaCost,
 
+    /// `object` -> `related_card`
+    #[serde(rename = "related_card")]
+    Related,
+
     /// `object` -> `ruling`
-    #[serde(rename = "ruling")]
     Ruling,
 
     /// `object` -> `set`
-    #[serde(rename = "set")]
     Set,
 }

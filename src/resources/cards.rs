@@ -238,46 +238,65 @@ impl HttpResource<CardCollection> for CardCollectionResource {
 /// Basic struct representing a card
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Card {
-    pub artist: String,
+    pub all_parts: Option<Vec<RelatedCard>>,
+    pub arena_id: Option<i32>,
+    pub artist: Option<String>,
     pub artist_ids: Vec<Uuid>,
     pub booster: bool,
     pub border_color: String,
     pub card_back_id: Option<Uuid>,
     pub card_faces: Option<Vec<CardFace>>,
+    pub cardmarket_id: Option<i32>,
     pub cmc: f64,
     pub collector_number: String,
     pub color_identity: Vec<ColorSymbol>,
+    pub color_indicator: Option<Vec<ColorSymbol>>,
     pub colors: Option<Vec<ColorSymbol>>,
+    pub content_warning: Option<bool>,
     pub digital: bool,
     pub edhrec_rank: Option<i64>,
-    pub finishes: Vec<String>,                  // TODO: enum??
+    pub finishes: Vec<CardFinish>,
+    pub flavor_name: Option<String>,
+    pub flavor_text: Option<String>,
     pub foil: bool,
     pub frame: String,
     pub full_art: bool,
-    pub games: Vec<String>,                     // TODO: enum??
+    pub games: Vec<GameKind>,
+    pub hand_modifier: Option<String>,
     pub highres_image: bool,
     pub id: Uuid,
     pub illustration_id: Option<Uuid>,
-    pub image_status: String,                   // TODO: enum??
+    pub image_status: ImageStatus,
     pub image_uris: Option<ImageUris>,
     pub keywords: Vec<String>,
     #[serde(rename = "object")]
     pub kind: ResourceKind,
     pub lang: String,
-    pub layout: String,                         // TODO: enum??
+    pub layout: Layout,
     pub legalities: Legalities,
+    pub life_modifier: Option<String>,
+    pub loyalty: Option<String>,
     pub mana_cost: Option<String>,
-    pub multiverse_ids: Vec<i64>,
+    pub mtgo_id: Option<i32>,
+    pub mtgo_foil_id: Option<i32>,
+    pub multiverse_ids: Option<Vec<i32>>,
     pub name: String,
     pub nonfoil: bool,
     pub oracle_id: Uuid,
+    pub oracle_text: Option<String>,
     pub oversized: bool,
     pub penny_rank: Option<i64>,
+    pub power: Option<String>,
     pub prices: Prices,
+    pub printed_name: Option<String>,
+    pub printed_text: Option<String>,
+    pub printed_type_line: Option<String>,
     pub prints_search_uri: Url,
+    pub produced_mana: Option<Vec<ColorSymbol>>,
     pub promo: bool,
+    pub promo_types: Option<Vec<String>>,
     pub purchase_uris: Option<PurchaseUris>,
-    pub rarity: String,                         // TODO: enum
+    pub rarity: Rarity,
     pub related_uris: Option<RelatedUris>,
     pub released_at: Date,
     pub reprint: bool,
@@ -293,11 +312,87 @@ pub struct Card {
     pub set_type: String,
     pub set_uri: Url,
     pub story_spotlight: bool,
-    pub tcgplayer_id: Option<i64>,
+    pub tcgplayer_id: Option<i32>,
+    pub tcgplayer_etched_id: Option<i32>,
     pub textless: bool,
+    pub toughness: Option<String>,
     pub type_line: String,
     pub uri: Url,
     pub variation: bool,
+    pub variation_of: Option<Uuid>,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+pub struct RelatedCard {
+    pub component: String,
+    pub id: Uuid,
+    #[serde(rename = "object")]
+    pub kind: ResourceKind,
+    pub name: String,
+    pub type_line: String,
+    pub uri: Url,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum CardFinish {
+    Etched,
+    Foil, 
+    Glossy,
+    NonFoil, 
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum GameKind {
+    Arena,
+    Mtgo,
+    Paper,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum ImageStatus {
+    HighresScan,
+    Lowres,
+    Missing,
+    Placeholder,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum Layout {
+    Adventure,
+    ArtSeries,
+    Augment,
+    Class,
+    DoubleFacedToken,
+    Emblem,
+    Flip,
+    Host,
+    Leveler,
+    Meld,
+    ModalDfc,
+    Normal,
+    Planar,
+    ReversibleCard,
+    Saga,
+    Scheme,
+    Split,
+    Token,
+    Transform,
+    Vanguard,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum Rarity {
+    Bonus,
+    Common,
+    Mythic,
+    Rare,
+    Special,
+    Uncommon,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
@@ -315,14 +410,28 @@ pub struct CardPage {
 pub struct CardFace {
     pub artist: Option<String>,
     pub artist_id: Option<Uuid>,
+    pub cmc: Option<f64>,
+    pub color_indicator: Option<Vec<ColorSymbol>>,
+    pub colors: Option<Vec<ColorSymbol>>,
     pub flavor_name: Option<String>,
+    pub flavor_text: Option<String>,
     pub illustration_id: Option<Uuid>,
+    pub image_uris: Option<ImageUris>,
     #[serde(rename = "object")]
     pub kind: ResourceKind,
+    pub layout: Option<Layout>,
+    pub loyalty: Option<String>,
     pub mana_cost: String,
     pub name: String,
-    pub oracle_text: String,
-    pub type_line: String,
+    pub oracle_id: Option<Uuid>,
+    pub oracle_text: Option<String>,
+    pub power: Option<String>,
+    pub printed_name: Option<String>,
+    pub printed_text: Option<String>,
+    pub printed_type_line: Option<String>,
+    pub toughness: Option<String>,
+    pub type_line: Option<String>,
+    pub watermark: Option<String>,
 }
 
 /// Container for image URLs
