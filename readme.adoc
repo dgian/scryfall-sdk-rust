@@ -18,12 +18,12 @@ IMPORTANT: This is currently a WIP.
 
 == Usage
 
-First add the dependency to `Cargo.toml`. Currently this crate is not published on https://crates.io[crates.io], so use this git repository instead.
+First add the dependency to `Cargo.toml`: 
 
 [source, toml]
 ----
 [dependencies]
-scryfall_sdk_rust = {git = "https://github.com/dgian/scryfall-sdk-rust.git"}
+scryfall_sdk_rust = 0.1
 ----
 
 The SDK exposes two HTTP clients using https://crates.io/crates/reqwest[reqwest crate]:
@@ -33,6 +33,12 @@ The SDK exposes two HTTP clients using https://crates.io/crates/reqwest[reqwest 
 . blocking client via `ScryfallBlocking` struct
 
 NOTE: In order to use the blocking client you have to enable the `blocking` optional feature in Cargo.toml.
+
+[source, toml]
+----
+[dependencies]
+scryfall_sdk_rust = {version = 0.1, features = ["blocking"] }
+----
 
 === Examples
 
