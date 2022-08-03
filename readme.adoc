@@ -16,6 +16,9 @@ This SDK is implemented mainly for learning and practicing Rust skills.
 
 IMPORTANT: This is currently a WIP.
 
+== Requirements
+* *Minimum Rust version*: `1.61`
+
 == Usage
 
 First add the dependency to `Cargo.toml`: 

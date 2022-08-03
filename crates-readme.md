@@ -4,6 +4,10 @@ This is a light SDK (http api-binding) for the amazing [Scryfall search-engine](
 
 This SDK is implemented mainly for learning and practicing Rust skills.
 
+## Requirements
+
+* **Minimum Rust version**: `1.61`
+
 ## Usage
 
 Add dependency to `Cargo.toml`
