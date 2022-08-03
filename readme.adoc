@@ -23,7 +23,7 @@ First add the dependency to `Cargo.toml`:
 [source, toml]
 ----
 [dependencies]
-scryfall_sdk_rust = 0.1
+scryfall_sdk_rust = "0.1"
 ----
 
 The SDK exposes two HTTP clients using https://crates.io/crates/reqwest[reqwest crate]:
@@ -37,7 +37,7 @@ NOTE: In order to use the blocking client you have to enable the `blocking` opti
 [source, toml]
 ----
 [dependencies]
-scryfall_sdk_rust = {version = 0.1, features = ["blocking"] }
+scryfall_sdk_rust = {version = "0.1", features = ["blocking"] }
 ----
 
 === Examples

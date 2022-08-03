@@ -10,7 +10,7 @@ Add dependency to `Cargo.toml`
 
 ```toml
 [dependencies]
-scryfall_sdk_rust = 0.1
+scryfall_sdk_rust = "0.1"
 ```
 
 The SDK exposes two HTTP clients using [reqwest crate](https://crates.io/crates/reqwest):
@@ -22,7 +22,7 @@ The SDK exposes two HTTP clients using [reqwest crate](https://crates.io/crates/
 
 ```toml
 [dependencies]
-scryfall_sdk_rust = {version = 0.1, features = ["blocking"] }
+scryfall_sdk_rust = {version = "0.1", features = ["blocking"] }
 ```
 
 ### Examples
