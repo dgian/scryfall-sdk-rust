@@ -2,7 +2,6 @@
 //!
 //! See [Scryfall api documentation](https://scryfall.com/docs/api/rulings)
 
-use reqwest::Method;
 use serde::{Deserialize, Serialize};
 use time::Date;
 
@@ -40,10 +39,6 @@ pub enum RulingListResource<'a> {
 }
 
 impl<'a> HttpResource<RulingList> for RulingListResource<'a> {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         format!("cards/{}/rulings", match self {
             ByCardId(id) => format!("{id}"),
@@ -80,6 +75,7 @@ mod tests {
     use rstest::rstest;
 
     use super::*;
+    use reqwest::Method;
 
     #[rstest]
     #[case::by_card_id(RulingListResource::ByCardId("id"), "cards/id/rulings")]

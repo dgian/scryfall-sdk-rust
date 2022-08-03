@@ -2,7 +2,6 @@
 //!
 //! See [Scryfall api documentation](https://scryfall.com/docs/api/card-symbols)
 
-use reqwest::Method;
 use serde::{Deserialize, Serialize};
 use url::Url;
 use crate::HttpResource;
@@ -15,20 +14,12 @@ pub struct CardSymbolsResource;
 pub struct ManaCostResource<'a>(pub &'a str);
 
 impl HttpResource<CardSymbolList> for CardSymbolsResource {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         "symbology".into()
     }
 }
 
 impl<'a> HttpResource<ManaCost> for ManaCostResource<'a> {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         format!("symbology/parse-mana?cost={}", self.0)
     }
@@ -96,6 +87,7 @@ pub enum ColorSymbol {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use reqwest::Method;
 
     #[test]
     fn mana_cost_resource_should_return_path_and_method() {

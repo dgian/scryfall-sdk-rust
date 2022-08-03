@@ -2,7 +2,6 @@
 //!
 //! See [Scryfall api documentation](https://scryfall.com/docs/api/sets)
 
-use reqwest::Method;
 use serde::{Deserialize, Serialize};
 use time::Date;
 use url::Url;
@@ -33,10 +32,6 @@ pub enum CardSetResource<'a> {
 }
 
 impl HttpResource<CardSetList> for CardSetListResource {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         match self {
             _ => format!("sets")
@@ -45,10 +40,6 @@ impl HttpResource<CardSetList> for CardSetListResource {
 }
 
 impl<'a> HttpResource<CardSet> for CardSetResource<'a> {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         let path = "sets";
 
@@ -99,100 +90,80 @@ pub struct CardSet {
 ///
 /// This refers to Scryfall `set.set_type` field
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
 pub enum SetKind {
 
     /// `set_type` -> `alchemy`
-    #[serde(rename = "alchemy")]
     Alchemy,
 
     /// `set_type` -> `archenemy`
-    #[serde(rename = "archenemy")]
     Archenemy,
 
     /// `set_type` -> `arsenal`
-    #[serde(rename = "arsenal")]
     Arsenal,
 
     /// `set_type` -> `box`
-    #[serde(rename = "box")]
     Box,
 
     /// `set_type` -> `commander`
-    #[serde(rename = "commander")]
     Commander,
 
     /// `set_type` -> `core`
-    #[serde(rename = "core")]
     Core,
 
     /// `set_type` -> `draft_innovation`
-    #[serde(rename = "draft_innovation")]
     DraftInnovation,
 
     /// `set_type` -> `duel_deck`
-    #[serde(rename = "duel_deck")]
     DuelDeck,
 
     /// `set_type` -> `expansion`
-    #[serde(rename = "expansion")]
     Expansion,
 
     /// `set_type` -> `from_the_vault`
-    #[serde(rename = "from_the_vault")]
     FromTheVault,
 
     /// `set_type` -> `funny`
-    #[serde(rename = "funny")]
     Funny,
 
     /// `set_type` -> `masterpiece`
-    #[serde(rename = "masterpiece")]
     Masterpiece,
 
     /// `set_type` -> `masters`
-    #[serde(rename = "masters")]
     Masters,
 
     /// `set_type` -> `memorabilia`
-    #[serde(rename = "memorabilia")]
     Memorabilia,
 
     /// `set_type` -> `planechase`
-    #[serde(rename = "planechase")]
     Planechase,
 
     /// `set_type` -> `premium_deck`
-    #[serde(rename = "premium_deck")]
     PremiumDeck,
 
     /// `set_type` -> `promo`
-    #[serde(rename = "promo")]
     Promo,
 
     /// `set_type` -> `spellbook`
-    #[serde(rename = "spellbook")]
     Spellbook,
 
     /// `set_type` -> `starter`
-    #[serde(rename = "starter")]
     Starter,
 
     /// `set_type` -> `token`
-    #[serde(rename = "token")]
     Token,
 
     /// `set_type` -> `treasure_chest`
-    #[serde(rename = "treasure_chest")]
     TreasureChest,
 
     /// `set_type` -> `vanguard`
-    #[serde(rename = "vanguard")]
     Vanguard,
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use reqwest::Method;
     use rstest::rstest;
 
     #[rstest]

@@ -2,7 +2,6 @@
 //!
 //! See [Scryfall api documentation](https://scryfall.com/docs/api/catalogs)
 
-use reqwest::Method;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -62,10 +61,6 @@ pub enum CatalogResource {
 }
 
 impl HttpResource<Catalog> for CatalogResource {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         format!("catalog/{}", match self {
             AbilityWords => "ability-words",

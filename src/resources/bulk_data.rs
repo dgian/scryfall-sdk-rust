@@ -2,7 +2,6 @@
 //!
 //! See [Scryfall api documentation](https://scryfall.com/docs/api/bulk-data)
 
-use reqwest::Method;
 use serde::{Deserialize, Serialize};
 use time::OffsetDateTime;
 use time::serde::iso8601;
@@ -31,20 +30,12 @@ pub enum BulkDataResource<'a> {
 }
 
 impl HttpResource<BulkDataList> for BulkDataListResource {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         format!("bulk-data")
     }
 }
 
 impl<'a> HttpResource<BulkData> for BulkDataResource<'a> {
-    fn method(&self) -> Method {
-        Method::GET
-    }
-
     fn path(&self) -> String {
         match self {
             Filter(by) => format!("bulk-data/{}", by),
@@ -84,24 +75,20 @@ pub struct BulkData {
 ///
 /// This refers to Scryfall `bulk_data.type` field
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[serde(rename_all = "snake_case")]
 pub enum BulkDataKind {
     /// `type` -> `all_cards`
-    #[serde(rename = "all_cards")]
     AllCards,
 
     /// `type` -> `default_cards`
-    #[serde(rename = "default_cards")]
     DefaultCards,
 
     /// `type` -> `oracle_cards`
-    #[serde(rename = "oracle_cards")]
     OracleCards,
 
     /// `type` -> `rulings`
-    #[serde(rename = "rulings")]
     Rulings,
 
     /// `type` -> `unique_artwork`
-    #[serde(rename = "unique_artwork")]
     UniqueArtwork,
 }
