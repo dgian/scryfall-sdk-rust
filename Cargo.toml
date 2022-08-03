@@ -1,7 +1,7 @@
 [package]
 name = "scryfall_sdk_rust"
 description = "A light wrapper (SDK) for Scryfall API (https://scryfall.com/docs/api)"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 categories = ["api-bindings"]
 keywords = ["sdk", "scryfall", "http-api-binding", "http"]

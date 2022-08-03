@@ -1,0 +1,13 @@
+= Changelog
+:icons: font
+
+== 0.1.1
+
+.housekeeping
+* Cleanup code: remove default http method and enum serde snake_case
+* Cleanup readme: add quotes in dependency blocks in readme files
+* Add changelog file
+
+== 0.1.0
+  
+Initial release!
